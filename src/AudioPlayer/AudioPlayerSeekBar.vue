@@ -106,6 +106,12 @@ function clamp(x: number, min: number, max: number): number {
 }
 
 export default defineComponent({
+  emits: {
+    seek: (seekTimeSec: number) => true,
+    seekStart: () => true,
+    seekEnd: () => true,
+  },
+
   watch: {
     currentTimeSec(newCurrentTimeSec: number) {
       this.$_updateSeekBarPosition(newCurrentTimeSec, this.$data.$_seekBarScale);
@@ -193,13 +199,13 @@ export default defineComponent({
     $_seekStart(mouseEvent: MouseEvent) {
       if (this.isSeeking) return;
       this.$data.$_isSeekingInternal = true;
-      this.$emit('seek-start');
+      this.$emit('seekStart');
       this.$_seek(mouseEvent);
     },
 
     $_seekEnd(mouseEvent: MouseEvent) {
       this.$_seek(mouseEvent);
-      this.$emit('seek-end');
+      this.$emit('seekEnd');
       this.$data.$_isSeekingInternal = false;
     },
 
